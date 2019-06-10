@@ -52,3 +52,8 @@
 .app-list-item.important .btn-star {
     color: #aeaeae;
 }
+
+.app-list-item .list-item-time {
+  font-size: 16px;
+  margin-right: 30px;
+}
