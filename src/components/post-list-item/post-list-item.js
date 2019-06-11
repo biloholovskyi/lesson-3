@@ -7,7 +7,7 @@ export default class PostListItem extends Component {
     super(props);
     this.postValue = React.createRef();
     this.state = {
-      important: false,
+      important: props.important || false,
       like: false,
       edited: false,
       label: props.label
