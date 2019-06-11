@@ -60,8 +60,9 @@
 
 .app-list-item .list-item-time {
   font-size: 16px;
-  margin-right: 30px;
+  margin: 0 30px;
   color: #fff;
+  white-space: nowrap;
 }
 
 .edit-post-form {
