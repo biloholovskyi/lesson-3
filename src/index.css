@@ -6,10 +6,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #eaf5fc;
+  background: radial-gradient(592.44px at 74.69% 65.61%, #262832 0%, #1A1B1F 100%);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.form-control,
+.form-control:focus {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-control::placeholder {
+  color: #f9f9f9;
 }

@@ -15,10 +15,12 @@
     outline: none;
 }
 .app-list-item .btn-star {
-    color: #FFD700;
+  color: #aeaeae;
+  background: radial-gradient(592.44px at 74.69% 65.61%, #262832 0%, #1A1B1F 100%);
 }
 .app-list-item .btn-trash {
-    color: red;
+  color: red;
+  background: radial-gradient(592.44px at 74.69% 65.61%, #262832 0%, #1A1B1F 100%);
 }
 .app-list-item .fa-heart {
     width: 35px;
@@ -38,6 +40,7 @@
   cursor: pointer;
   user-select: none;
   transition: 0.5s all;
+  color: #fff;
 }
 
 .app-list-item.like .fa-heart {
@@ -50,10 +53,12 @@
 }
 
 .app-list-item.important .btn-star {
-    color: #aeaeae;
+  color: #FFD700;
+  background: radial-gradient(592.44px at 74.69% 65.61%, #262832 0%, #1A1B1F 100%);
 }
 
 .app-list-item .list-item-time {
   font-size: 16px;
   margin-right: 30px;
+  color: #fff;
 }
