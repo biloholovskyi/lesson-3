@@ -58,7 +58,7 @@ export default class App extends Component {
     })
   }
 
-  modalQuestion = ({question = "some text", id, success = () => {console.log('success')}}) => {
+  modalQuestion = ({question = "some text", id, success = () => {console.log('success')}} = {}) => {
     this.setState(({modal:{status}}) => {
       return {
         modal: {
