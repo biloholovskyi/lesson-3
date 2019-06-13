@@ -111,8 +111,7 @@ export default class App extends Component {
         <PostAddForm onAdd={this.addItem}/>
         <ModalAlert
           modalData={this.state.modal}
-          close={this.closeModal}
-          success={this.deleteItem}/>
+          close={this.closeModal}/>
       </AppStyle>
     );
   }
