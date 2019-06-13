@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import idGenerator from 'react-id-generator';
 
 import AppHeader from '../app-header';
 import SearchPanel from "../search-panel";
 import PostStatusFilter from '../post-status-filter';
 import PostList from '../post-list';
 import PostAddForm from '../post-add-form';
+import ModalAlert from '../modal-alert';
 
 const AppStyle = styled.div`
   margin: 0 auto;
@@ -28,8 +28,46 @@ export default class App extends Component {
         {label: "Going to learn ReactJS", important: true, id: "qwe"},
         {label: "That is so good", important: false, id: "rty"},
         {label: "I need a break...", important: false, id: "yui"}
-      ]
+      ],
+      modal: {
+        status: false,
+        question: "Some text",
+        success: () => {console.log('success')}
+      }
     }
+  }
+
+  newId = () => {
+    const {data} = this.state;
+    const id = Math.random().toString(36).substring(10);
+    const oldId = data.filter(item => item.id === id);
+    if(oldId.length === 0) {
+      return id;
+    } else {
+      this.newId();
+    }
+  }
+
+  closeModal = () => {
+    this.setState(({modal: {status}}) => {
+      return {
+        modal: {
+          status: !status
+        }
+      }
+    })
+  }
+
+  modalQuestion = ({question = "some text", id, success = () => {console.log('success')}}) => {
+    this.setState(({modal:{status}}) => {
+      return {
+        modal: {
+          question,
+          status: !status,
+          success: success
+        }
+      }
+    });
   }
 
   deleteItem = (id) => {
@@ -40,15 +78,15 @@ export default class App extends Component {
         data: newArr
       };
     });
+    this.closeModal();
   }
 
   addItem = (body, e) => {
     e.preventDefault();
-    console.log(e);
     const newItem = {
       label: body,
       important: false,
-      id: idGenerator()
+      id: this.newId()
     }
     this.setState(({data}) => {
       const newArr = [...data, newItem];
@@ -68,8 +106,13 @@ export default class App extends Component {
         </SearchPanelStyle>
         <PostList
           posts={this.state.data}
-          onDelete={this.deleteItem}/>
+          onDelete={this.deleteItem}
+          showModal={this.modalQuestion}/>
         <PostAddForm onAdd={this.addItem}/>
+        <ModalAlert
+          modalData={this.state.modal}
+          close={this.closeModal}
+          success={this.deleteItem}/>
       </AppStyle>
     );
   }

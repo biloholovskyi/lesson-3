@@ -4,15 +4,15 @@ import './post-list.css';
 import PostListItem from '../post-list-item';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-const PostList = ({posts, onDelete}) => {
+const PostList = ({posts, onDelete, showModal}) => {
 
   const elements = posts.filter(item => toString.call(item) === "[object Object]").map((item) => {
     const {id, ...itemProps} = item;
     return (
-      <ListGroupItem key={id}>
+      <ListGroupItem key={id} id={id}>
         <PostListItem
           {...itemProps}
-          onDelete={() => onDelete(id)}/>
+          onDelete={() => showModal({question: "Вы точно собираетесь удалить запись?", id, success: () => {onDelete(id)}})}/>
       </ListGroupItem>
     )
   });
