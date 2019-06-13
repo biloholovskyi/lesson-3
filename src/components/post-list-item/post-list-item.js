@@ -43,6 +43,7 @@ export default class PostListItem extends Component {
     const time = new Date();
     let classNames = "app-list-item d-flex justify-content-between";
     let classNamesEdit = "edit-post-form";
+    const {onDelete} = this.props;
     const {important, like, edited, label} = this.state;
     if(important) {
       classNames += ' important';
@@ -74,7 +75,10 @@ export default class PostListItem extends Component {
               onClick={this.onImportant}>
               <i className="fa fa-star"></i>
             </button>
-            <button type="button" className="btn-trash btn-sm">
+            <button
+              type="button"
+              className="btn-trash btn-sm"
+              onClick={onDelete}>
               <i className="fa fa-trash-o"></i>
             </button>
             <i className="fa fa-heart"></i>
