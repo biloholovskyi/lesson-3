@@ -5,25 +5,11 @@ import './post-list-item.css';
 export default class PostListItem extends Component {
   constructor (props) {
     super(props);
-    this.postValue = React.createRef();
     this.state = {
-      important: props.important || false,
-      like: false,
       edited: false,
-      label: props.label
+      label: props.label,
+      input: ''
     }
-  }
-
-  onImportant = () => {
-    this.setState(({important}) => ({
-      important: !important
-    }))
-  }
-
-  onLike = () => {
-    this.setState(({like}) => ({
-      like: !like
-    }))
   }
 
   edit = () => {
@@ -32,19 +18,21 @@ export default class PostListItem extends Component {
     }))
   }
 
-  editPost = (e) => {
-    e.preventDefault();
-    this.setState({label: this.postValue.current.value});
-    this.postValue.current.value = "";
-    this.edit();
+  onValueChange = (e) => {
+    this.setState({input: e.target.value});
+  }
+
+  onSubmit = (e) => {
+    this.props.onNewValue(this.state.input, e, this.props.id);
+    this.setState({input: ''});
   }
 
   render() {
     const time = new Date();
     let classNames = "app-list-item d-flex justify-content-between";
     let classNamesEdit = "edit-post-form";
-    const {onDelete} = this.props;
-    const {important, like, edited, label} = this.state;
+    const {onDelete, onToggleSocial, important, like, id} = this.props;
+    const {edited, label} = this.state;
     if(important) {
       classNames += ' important';
     }
@@ -60,7 +48,7 @@ export default class PostListItem extends Component {
         <div className={classNames}>
         <span
           className="app-list-item-label"
-          onClick={this.onLike}>{label}</span>
+          onClick={() => onToggleSocial(id, 'like')}>{label}</span>
           <div className="d-flex justify-content-center align-items-center">
             <span className="list-item-time">{time.toLocaleString([], {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
             <button
@@ -72,7 +60,7 @@ export default class PostListItem extends Component {
             <button
               type="button"
               className="btn-star btn-sm"
-              onClick={this.onImportant}>
+              onClick={() => onToggleSocial(id, 'important')}>
               <i className="fa fa-star"></i>
             </button>
             <button
@@ -86,12 +74,13 @@ export default class PostListItem extends Component {
         </div>
         <form
           className={classNamesEdit}
-          onSubmit={this.editPost}>
+          onSubmit={this.onSubmit}>
           <input
             type="text"
             placeholder="Новое значение"
             className="form-control new-post-label"
-            ref={this.postValue} />
+            onChange={this.onValueChange}
+            value={this.state.input}/>
             <button type="submit" className="btn btn-outline-secondary" >Изменить</button>
         </form>
       </>

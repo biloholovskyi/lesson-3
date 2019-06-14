@@ -23,17 +23,17 @@ export default class App extends Component {
     super(props);
     this.state = {
       data: [
-        1,
-        [''],
-        {label: "Going to learn ReactJS", important: true, id: "qwe"},
-        {label: "That is so good", important: false, id: "rty"},
-        {label: "I need a break...", important: false, id: "yui"}
+        {label: "Going to learn ReactJS", important: true, like: false, id: "qwe"},
+        {label: "That is so good", important: false, like: false, id: "rty"},
+        {label: "I need a break...", important: false, like: false, id: "yui"}
       ],
       modal: {
         status: false,
         question: "Some text",
         success: () => {console.log('success')}
-      }
+      },
+      term: '',
+      filter: 'all'
     }
   }
 
@@ -83,31 +83,96 @@ export default class App extends Component {
 
   addItem = (body, e) => {
     e.preventDefault();
-    const newItem = {
-      label: body,
-      important: false,
-      id: this.newId()
+    if(body) {
+      const newItem = {
+        label: body,
+        important: false,
+        id: this.newId()
+      }
+      this.setState(({data}) => {
+        const newArr = [...data, newItem];
+        return {
+          data: newArr
+        }
+      })
     }
+  }
+
+  onToggleSocial = (id, key) => {
     this.setState(({data}) => {
-      const newArr = [...data, newItem];
+      const index = data.findIndex(elem => elem.id === id);
+      const newItem = data[index];
+      newItem[key] = !newItem[key];
+      const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
       return {
         data: newArr
       }
     })
   }
 
+  searchPost = (items, term) => {
+    if(term === 0) {
+      return items;
+    }
+    return items.filter(item => item.label.indexOf(term) > -1);
+  }
+
+  onUpdateSearch = (term) => {
+    this.setState({term});
+  }
+
+  onFilterSelect = (filter) => {
+    this.setState({filter});
+  }
+
+  filterPost = (items, filter) => {
+    if(filter === 'like') {
+      return items.filter(item => item.like);
+    } else {
+      return items;
+    }
+  }
+
+  onNewValue = (body, e, id) => {
+    e.preventDefault();
+    if(body) {
+      this.setState(({data}) => {
+        const index = data.findIndex(elem => elem.id === id);
+        const old = data[index];
+        const newItem = {...old, label: body, id: this.newId()};
+        const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+        console.log(newArr);
+        return {
+          data: newArr
+        }
+      })
+    }
+  }
+
   render() {
+    const {data, term, filter} = this.state;
+    const like = data.filter(item => item.like).length;
+    const allPost = data.length;
+    const visiblePost = this.filterPost(this.searchPost(data, term), filter);
     return (
       <AppStyle>
-        <AppHeader/>
+        <AppHeader
+          like={like}
+          allPost={allPost}/>
         <SearchPanelStyle>
-          <SearchPanel/>
-          <PostStatusFilter/>
+          <SearchPanel
+            onUpdateSearch={this.onUpdateSearch}/>
+          <PostStatusFilter
+            filter={filter}
+            onFilterSelect={this.onFilterSelect}/>
         </SearchPanelStyle>
         <PostList
-          posts={this.state.data}
+          posts={visiblePost}
           onDelete={this.deleteItem}
-          showModal={this.modalQuestion}/>
+          showModal={this.modalQuestion}
+          onToggleSocial={this.onToggleSocial}
+          onNewValue={this.onNewValue}/>
         <PostAddForm onAdd={this.addItem}/>
         <ModalAlert
           modalData={this.state.modal}
