@@ -15,10 +15,20 @@ const Header = styled.div`
 `
 
 const AppHeader = ({like, allPost}) => {
+  let text;
+  if (allPost > 10 && allPost < 21) {
+    text = "записей";
+  } else if(+allPost.toString().slice(-1) === 1) {
+    text = "запись";
+  } else if(+allPost.toString().slice(-1) > 1 && +allPost.toString().slice(-1) < 5) {
+    text = "записи";
+  } else if(+allPost.toString().slice(-1) > 4 || +allPost.toString().slice(-1) === 0) {
+    text = "записей";
+  }
   return (
     <Header>
       <h1>Danil Biloholovskyi</h1>
-      <h2>{allPost} записей, из них понравилось {like}</h2>
+      <h2>{allPost} {text}, из них понравилось {like}</h2>
     </Header>
   )
 }

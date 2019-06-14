@@ -115,7 +115,7 @@ export default class App extends Component {
     if(term === 0) {
       return items;
     }
-    return items.filter(item => item.label.indexOf(term) > -1);
+    return items.filter(item => item.label.toLowerCase().indexOf(term) > -1);
   }
 
   onUpdateSearch = (term) => {
@@ -141,6 +141,7 @@ export default class App extends Component {
         const index = data.findIndex(elem => elem.id === id);
         const old = data[index];
         const newItem = {...old, label: body, id: this.newId()};
+        // const newItem = {...old, label: body};
         const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
         console.log(newArr);
         return {
